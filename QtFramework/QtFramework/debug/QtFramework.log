@@ -1,0 +1,37 @@
+﻿cl : command line warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+cl : command line warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+cl : command line warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+  GLWidget.cpp
+cl : command line warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+cl : command line warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+  MainWindow.cpp
+  ParametricSurfaces3.cpp
+  main.cpp
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(143,30): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file Parametric\ParametricSurfaces3.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(144,28): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file Parametric\ParametricSurfaces3.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Parametric\ParametricSurfaces3.cpp(6,1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Parametric\ParametricSurfaces3.cpp(9,1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Parametric\ParametricSurfaces3.cpp(97,48): warning C4244: '=': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Parametric\ParametricSurfaces3.cpp(98,48): warning C4244: '=': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(143,30): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file GUI\GLWidget.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(144,28): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file GUI\GLWidget.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(974,26): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(976,20): warning C4305: '-=': truncation from 'double' to 'GLfloat'
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\Matrices.h(353,27): warning C4018: '<': signed/unsigned mismatch (compiling source file GUI\GLWidget.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\Matrices.h(350): message : while compiling class template member function 'cagd::TriangularMatrix<cagd::ParametricSurface3::PartialDerivative>::TriangularMatrix(GLuint)' (compiling source file GUI\GLWidget.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(464): message : see reference to function template instantiation 'cagd::TriangularMatrix<cagd::ParametricSurface3::PartialDerivative>::TriangularMatrix(GLuint)' being compiled
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Parametric\ParametricSurfaces3.h(19): message : see reference to class template instantiation 'cagd::TriangularMatrix<cagd::ParametricSurface3::PartialDerivative>' being compiled (compiling source file GUI\GLWidget.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(143,30): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file main.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(144,28): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file main.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(143,30): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file GUI\MainWindow.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(144,28): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file GUI\MainWindow.cpp)
+cl : command line warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+cl : command line warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+cl : command line warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+  moc_GLWidget.cpp
+  moc_MainWindow.cpp
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(143,30): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file Debug\moc_GLWidget.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(144,28): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file Debug\moc_GLWidget.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(143,30): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file Debug\moc_MainWindow.cpp)
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(144,28): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data (compiling source file Debug\moc_MainWindow.cpp)
+  QtFramework.vcxproj -> D:\Programming\repos\graphics-new\QtFramework\QtFramework\debug\QtFramework.exe
