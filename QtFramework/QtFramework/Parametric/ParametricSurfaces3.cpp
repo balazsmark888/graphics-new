@@ -69,7 +69,7 @@ namespace cagd
             for (GLuint j = 0; j < v_div_point_count; ++j)
             {
                 GLdouble v = min(_v_min + j * dv, _v_max);
-                GLdouble t = min(i * dt, 1.0);
+                GLdouble t = min(j * dt, 1.0);
 
                 /*
                     3-2

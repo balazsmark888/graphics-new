@@ -93,7 +93,7 @@ namespace cagd
 
 		// corners of bounding box
 		DCoordinate3                 _leftmost_vertex;
-		DCoordinate3                 _rightmost_vertex;
+		DCoordinate3                 _rightmost_vertex; //TODO: add these to stream operators
 
 		// geometry
 		std::vector<DCoordinate3>    _vertex;

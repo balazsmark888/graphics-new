@@ -1,5 +1,8 @@
 uniform vec4 default_outline_color;
 
+
+
+
 varying float intensity;
 varying vec3  normal, light_direction;
 

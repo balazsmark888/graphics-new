@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     _scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     _gl_widget = new GLWidget(this);
+    _gl_widget->_sideWidget = _side_widget;
 
     centralWidget()->setLayout(new QHBoxLayout());
     centralWidget()->layout()->addWidget(_gl_widget);
@@ -69,6 +70,14 @@ MainWindow::MainWindow(QWidget *parent)
             SIGNAL(valueChanged(double)),
             _gl_widget,
             SLOT(set_trans_z(double)));
+    connect(_side_widget->firstDerivScaleSpinner,
+            SIGNAL(valueChanged(double)),
+            _gl_widget,
+            SLOT(setFirstDerivScale(double)));
+    connect(_side_widget->secondDerivScaleSpinner,
+            SIGNAL(valueChanged(double)),
+            _gl_widget,
+            SLOT(setSecondDerivScale(double)));
 
     connect(_side_widget->pc_combo_box,
             SIGNAL(currentIndexChanged(int)),
@@ -220,6 +229,23 @@ MainWindow::MainWindow(QWidget *parent)
             SIGNAL(valueChanged(double)),
             _gl_widget,
             SLOT(set_ArcVectorValue4_3(double)));
+
+    connect(_side_widget->cyclicCoordIndexComboBox,
+            SIGNAL(currentIndexChanged(int)),
+            _gl_widget,
+            SLOT(setCyclicCoordinateIndex(int)));
+    connect(_side_widget->cyclicCoordXSpinner,
+            SIGNAL(valueChanged(double)),
+            _gl_widget,
+            SLOT(setCyclicCoordinateX(double)));
+    connect(_side_widget->cyclicCoordYSpinner,
+            SIGNAL(valueChanged(double)),
+            _gl_widget,
+            SLOT(setCyclicCoordinateY(double)));
+    connect(_side_widget->cyclicCoordZSpinner,
+            SIGNAL(valueChanged(double)),
+            _gl_widget,
+            SLOT(setCyclicCoordinateZ(double)));
 }
 
 //--------------------------------

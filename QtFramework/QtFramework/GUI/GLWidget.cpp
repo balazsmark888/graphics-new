@@ -90,6 +90,8 @@ namespace cagd
 			initSandbox();
 			initParametricSurfaces();
 			initTextures();
+			initCyclicControlCoordinates();
+			initCyclicCurve();
 		}
 		catch (Exception& e)
 		{
@@ -116,10 +118,7 @@ namespace cagd
 		glScaled(_zoom, _zoom, _zoom);
 
 		// render your geometry (this is oldest OpenGL rendering technique, later we will use some advanced methods)
-		if (textureIndex != 0)
-		{
-			textures[textureIndex - 1]->bind();
-		}
+
 		switch (image_index) {
 		case 0:
 			showParametricCurves();
@@ -130,9 +129,9 @@ namespace cagd
 		case 2:
 			showParametricSurfaces();
 			break;
-			//                case 3:
-			//                    showCyclicCurve();
-			//                    break;
+		case 3:
+			showCyclicCurve();
+			break;
 			//                case 4:
 			//                    showBiquarticArc();
 			//                    break;
@@ -208,7 +207,7 @@ namespace cagd
 			derivative(1) = spiral_on_cone::d2;
 
 
-		_pcs[0] = new (nothrow) ParametricCurve3(derivative, spiral_on_cone::u_min, spiral_on_cone::u_max);
+		_pcs[0] = new (nothrow) ParametricCurve3(derivative, spiral_on_cone::u_min, spiral_on_cone::u_max, pcFirstDerivScale, pcSecondDerivScale);
 
 		if (!_pcs[0]) {
 			exit(-1);
@@ -222,7 +221,7 @@ namespace cagd
 		if (!isFirstDerivative && isSecondDerivative)
 			derivative(1) = torus_knot::d2;
 
-		_pcs[1] = new (nothrow) ParametricCurve3(derivative, torus_knot::u_min, torus_knot::u_max);
+		_pcs[1] = new (nothrow) ParametricCurve3(derivative, torus_knot::u_min, torus_knot::u_max, pcFirstDerivScale, pcSecondDerivScale);
 
 		if (!_pcs[1]) {
 			exit(-1);
@@ -237,7 +236,7 @@ namespace cagd
 			derivative(1) = parametric_curve_1::d2;
 
 		_pcs[2] = new (nothrow)
-			ParametricCurve3(derivative, parametric_curve_1::u_min, parametric_curve_1::u_max);
+			ParametricCurve3(derivative, parametric_curve_1::u_min, parametric_curve_1::u_max, pcFirstDerivScale, pcSecondDerivScale);
 
 		if (!_pcs[2]) {
 			exit(-1);
@@ -251,7 +250,7 @@ namespace cagd
 		if (!isFirstDerivative && isSecondDerivative)
 			derivative(1) = hypotrochoid::d2;
 
-		_pcs[3] = new (nothrow) ParametricCurve3(derivative, hypotrochoid::u_min, hypotrochoid::u_max);
+		_pcs[3] = new (nothrow) ParametricCurve3(derivative, hypotrochoid::u_min, hypotrochoid::u_max, pcFirstDerivScale, pcSecondDerivScale);
 
 		if (!_pcs[3]) {
 			exit(-1);
@@ -265,7 +264,7 @@ namespace cagd
 		if (!isFirstDerivative && isSecondDerivative)
 			derivative(1) = viviani::d2;
 
-		_pcs[4] = new (nothrow) ParametricCurve3(derivative, viviani::u_min, viviani::u_max);
+		_pcs[4] = new (nothrow) ParametricCurve3(derivative, viviani::u_min, viviani::u_max, pcFirstDerivScale, pcSecondDerivScale);
 
 		if (!_pcs[4]) {
 			exit(-1);
@@ -279,7 +278,7 @@ namespace cagd
 		if (!isFirstDerivative && isSecondDerivative)
 			derivative(1) = archytas::d2;
 
-		_pcs[5] = new (nothrow) ParametricCurve3(derivative, archytas::u_min, archytas::u_max);
+		_pcs[5] = new (nothrow) ParametricCurve3(derivative, archytas::u_min, archytas::u_max, pcFirstDerivScale, pcSecondDerivScale);
 
 		if (!_pcs[5]) {
 			exit(-1);
@@ -436,7 +435,7 @@ namespace cagd
 		}
 		{
 			shaders[2].Enable();
-			shaders[2].SetUniformVariable4f("default_outline_color", 0.5f, 0.5f, 0.5f, 1.0f);
+			shaders[2].SetUniformVariable4f("default_outline_color", scaleFactor, smoothing, shading, 1.0f);
 			shaders[2].Disable();
 		}
 
@@ -542,15 +541,99 @@ namespace cagd
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glEnable(GL_NORMALIZE);
+		glEnable(GL_TEXTURE_2D);
+		if (textureIndex != 0)
+		{
+			textures[textureIndex - 1]->bind();
+		}
 		if (_images_of_ps[ps_index]) {
 			_images_of_ps[ps_index]->Render();
 		}
+		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_LIGHTING);
 		glDisable(GL_LIGHT0);
 		glDisable(GL_NORMALIZE);
 
 		if (show_shader) {
 			shaders[shader_index].Disable();
+		}
+	}
+
+	void GLWidget::initCyclicControlCoordinates()
+	{
+		cyclicControlCoordinates.ResizeColumns(6);
+		cyclicControlCoordinates[0] = DCoordinate3(0, 1, 0);
+		cyclicControlCoordinates[1] = DCoordinate3(0, 0.5, 0.2 * sqrt(3));
+		cyclicControlCoordinates[2] = DCoordinate3(0, -0.5, 0.5 * sqrt(2));
+		cyclicControlCoordinates[3] = DCoordinate3(0, -1, 0);
+		cyclicControlCoordinates[4] = DCoordinate3(1, -0.7, -0.3 * sqrt(5));
+		cyclicControlCoordinates[5] = DCoordinate3(1, 0.22, -0.5 * sqrt(7));
+	}
+
+	void GLWidget::initCyclicCurve()
+	{
+		GLint curvePointNumber = 6;
+
+		cCurve = new CyclicCurve3(curvePointNumber / 2);
+		(*cCurve)[0] = cyclicControlCoordinates[0];
+		(*cCurve)[1] = cyclicControlCoordinates[1];
+		(*cCurve)[2] = cyclicControlCoordinates[2];
+		(*cCurve)[3] = cyclicControlCoordinates[3];
+		(*cCurve)[4] = cyclicControlCoordinates[4];
+		(*cCurve)[5] = cyclicControlCoordinates[5];
+		(*cCurve)[6] = (*cCurve)[0];
+
+		cCurve->UpdateVertexBufferObjectsOfData();
+
+		cCurveImage = cCurve->GenerateImage(2, 200);
+
+		if (cCurveImage) {
+			cCurveImage->UpdateVertexBufferObjects(GL_STATIC_DRAW);
+		}
+
+		ColumnMatrix<DCoordinate3> cyclicCurveDataPointsToInterpolate(curvePointNumber + 1);
+		for (auto i = 0; i < curvePointNumber + 1; i++) {
+			cyclicCurveDataPointsToInterpolate[i] = (*cCurve)[i];
+		}
+
+		ColumnMatrix<GLdouble> knotVector(curvePointNumber + 1);
+		for (auto i = 0; i < curvePointNumber + 1; i++) {
+			knotVector[i] = TWO_PI * (i / (GLdouble)curvePointNumber + 1);
+		}
+
+		if (cCurve->UpdateDataForInterpolation(knotVector, cyclicCurveDataPointsToInterpolate)) {
+			cCurveImageInterpolated = cCurve->GenerateImage(0, 200);
+			if (cCurveImageInterpolated) {
+				cCurveImageInterpolated->UpdateVertexBufferObjects();
+			}
+		}
+	}
+
+	void GLWidget::showCyclicCurve()
+	{
+		if (isCyclicPolygon) {
+			glColor3f(1.0f, 1.0f, 1.0f);
+			cCurve->RenderData();
+		}
+		if (cCurveImage) {
+			if (isCyclicCurveNoInterpolation) {
+				glColor3f(0.0f, 0.0f, 1.0f);
+				cCurveImage->RenderDerivatives(0, GL_LINE_STRIP);
+			}
+			if (isCyclicFirstDeriv) {
+				glColor3f(0.3f, 0.2f, 0.5f);
+				cCurveImage->RenderDerivatives(1, GL_LINES);
+			}
+			if (isCyclicSecondDeriv) {
+				glColor3f(0.5f, 0.2f, 0.4f);
+				cCurveImage->RenderDerivatives(2, GL_LINES);
+			}
+		}
+		if (cCurveImageInterpolated) {
+			if (isCyclicInterpolated) {
+				glColor3f(0.8f, 0.8f, 0.4f);
+				cCurveImageInterpolated->RenderDerivatives(0, GL_LINE_STRIP);
+			}
 		}
 	}
 
@@ -765,27 +848,30 @@ namespace cagd
 	void GLWidget::set_smoothing(double value)
 	{
 		smoothing = value;
-		shaders[1].Enable();
-		shaders[1].SetUniformVariable1f("smoothing", smoothing);
-		shaders[1].Disable();
+		shaders[shader_index].Enable();
+		shaders[shader_index].SetUniformVariable1f("smoothing", smoothing);
+		shaders[shader_index].SetUniformVariable4f("default_outline_color", scaleFactor, smoothing, shading, 1.0f);
+		shaders[shader_index].Disable();
 		update();
 	}
 
 	void GLWidget::set_scaleFactor(double value)
 	{
 		scaleFactor = value;
-		shaders[1].Enable();
-		shaders[1].SetUniformVariable1f("scale_factor", scaleFactor);
-		shaders[1].Disable();
+		shaders[shader_index].Enable();
+		shaders[shader_index].SetUniformVariable1f("scale_factor", scaleFactor);
+		shaders[shader_index].SetUniformVariable4f("default_outline_color", scaleFactor, smoothing, shading, 1.0f);
+		shaders[shader_index].Disable();
 		update();
 	}
 
 	void GLWidget::set_shading(double value)
 	{
 		shading = value;
-		shaders[1].Enable();
-		shaders[1].SetUniformVariable1f("shading", shading);
-		shaders[1].Disable();
+		shaders[shader_index].Enable();
+		shaders[shader_index].SetUniformVariable1f("shading", shading);
+		shaders[shader_index].SetUniformVariable4f("default_outline_color", scaleFactor, smoothing, shading, 1.0f);
+		shaders[shader_index].Disable();
 		update();
 	}
 
@@ -999,6 +1085,41 @@ namespace cagd
 		}
 		textureIndex = index;
 		initParametricSurfaces();
+		update();
+	}
+	void GLWidget::setFirstDerivScale(double value)
+	{
+		pcFirstDerivScale = value;
+		initParametricCurves();
+	}
+	void GLWidget::setSecondDerivScale(double value)
+	{
+		pcSecondDerivScale = value;
+		initParametricCurves();
+	}
+	void GLWidget::setCyclicCoordinateIndex(int value)
+	{
+		cyclicCoordinateIndex = value;
+		_sideWidget->cyclicCoordXSpinner->setValue(cyclicControlCoordinates[cyclicCoordinateIndex].x());
+		_sideWidget->cyclicCoordYSpinner->setValue(cyclicControlCoordinates[cyclicCoordinateIndex].y());
+		_sideWidget->cyclicCoordZSpinner->setValue(cyclicControlCoordinates[cyclicCoordinateIndex].z());
+	}
+	void GLWidget::setCyclicCoordinateX(double value)
+	{
+		cyclicControlCoordinates[cyclicCoordinateIndex].setx(value);
+		initCyclicCurve();
+		update();
+	}
+	void GLWidget::setCyclicCoordinateY(double value)
+	{
+		cyclicControlCoordinates[cyclicCoordinateIndex].sety(value);
+		initCyclicCurve();
+		update();
+	}
+	void GLWidget::setCyclicCoordinateZ(double value)
+	{
+		cyclicControlCoordinates[cyclicCoordinateIndex].setz(value);
+		initCyclicCurve();
 		update();
 	}
 }
