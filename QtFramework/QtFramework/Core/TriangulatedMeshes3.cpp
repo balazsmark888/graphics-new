@@ -465,6 +465,9 @@ GLboolean cagd::TriangulatedMesh3::SaveToOFF(const std::string& file_name) const
 
 	f << VertexCount() << "\t" << FaceCount() << "\t" << edgeCount() << endl;
 
+	//saving the leftmost and rightmost vertices
+	f << _leftmost_vertex << "\t" << _rightmost_vertex << endl;
+
 	// saving vertices
 	for (auto vit = _vertex.begin(); vit != _vertex.end(); ++vit)
 	{

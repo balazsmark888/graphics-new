@@ -4,12 +4,12 @@
 #include <QtOpenGLWidgets/qopenglwidget.h>
 #include "Parametric/ParametricCurves3.h"
 #include "Parametric/ParametricSurfaces3.h"
-#include "Core/BiquarticArc.h"
-#include "Core/BiquarticPatch.h"
 #include "Core/TriangulatedMeshes3.h"
 #include "Core/CyclicCurves3.h"
 #include "Core/ShaderPrograms.h"
 #include "Core/Lights.h"
+#include "Core/CubicBSplineArc3.h"
+#include "Core/CubicBSplinePatch.h"
 #include <Sandbox.h>
 #include <qtimer.h>
 #include <QOpenGLTexture>
@@ -73,14 +73,27 @@ namespace cagd
 		bool isCyclicSecondDeriv = false;
 		bool isCyclicInterpolated = false;
 
-		bool isBiquarticPolygon = false;
-		bool isBiquarticFirstDeriv = false;
-		bool isBiquarticSecondDeriv = false;
-		bool isBiquarticArcNoInterpolation = false;
+		bool isArcPolygon = false;
+		bool isArcFirstDeriv = false;
+		bool isArcSecondDeriv = false;
+		bool isArcNoInterpolation = false;
+		int arcCount = 1;
+		int arcDataIndex = 0;
+		int arcDivPointCount = 50;
 
-		bool isBiquarticData = false;
-		bool isBiquarticNoInterpolation = false;
-		bool isBiquarticInterpolated = false;
+		bool showPatchData = false;
+		bool showPatchNoInterpolation = false;
+		bool showPatchInterpolated = false;
+		bool showPatchPartialDerivatives = true;
+		bool showPatchNormalVectors = false;
+		bool showPatchIsoparametricCurves_U = false;
+		bool showPatchIsoparametricCurves_V = false;
+
+		int patchDivPointCount_U = 100;
+		int patchDivPointCount_V = 100;
+		int patchSelectedRow = 0;
+		int patchSelectedColumn = 0;
+		int patchCount = 1;
 
 
 		ParametricSurface3* _pss[6];
@@ -88,16 +101,23 @@ namespace cagd
 		RowMatrix<TriangulatedMesh3> _images_of_model;
 		TriangulatedMesh3* _images_of_ps[5];
 
-		BiquarticArc* bArc;
-		GenericCurve3* bArcImage;
+		RowMatrix<DCoordinate3>* arcData;
+		RowMatrix<CubicBSplineArc3*>* arcs;
+		RowMatrix<GenericCurve3*>* arcImages;
+		Matrix<GLfloat>* arcColors;
 
 		CyclicCurve3* cCurve;
 		GenericCurve3* cCurveImage;
 		GenericCurve3* cCurveImageInterpolated;
 
-		BiquarticPatch* bPatch;
-		TriangulatedMesh3* bPatchImage;
-		TriangulatedMesh3* bPatchImageInterpolated;
+		int patchSize = 1;
+		Matrix<DCoordinate3*>* patchData;
+		Matrix<CubicBSplinePatch*>* patches;
+		Matrix<TriangulatedMesh3*>* patchImages;
+		TriangulatedMesh3* patchImageInterpolated;
+		Matrix<Material>* patchMaterials;
+		RowMatrix<GenericCurve3*>* patchIsoCurves_U;
+		RowMatrix<GenericCurve3*>* patchIsoCurves_V;
 
 		ShaderProgram shader;
 		RowMatrix<ShaderProgram> shaders;
@@ -115,8 +135,6 @@ namespace cagd
 		// the format specifies the properties of the rendering window
 		GLWidget(QWidget* parent = 0);
 		SideWidget* _sideWidget;
-
-
 
 		// redeclared virtual functions
 		void initializeGL();
@@ -141,6 +159,16 @@ namespace cagd
 		void initCyclicControlCoordinates();
 		void initCyclicCurve();
 		void showCyclicCurve();
+
+		void initArcData();
+		void initArc();
+		void showArc();
+		void setArcUiValues();
+
+		void initPatchData();
+		void setPatchUiValues();
+		void initPatch();
+		void showPatch();
 
 	public slots:
 		// public event handling methods/slots
@@ -176,10 +204,6 @@ namespace cagd
 		void set_isBiquarticSecondDeriv(bool value);
 		void set_isBiquarticArcNoInterpolation(bool value);
 
-		void set_isBiquarticData(bool value);
-		void set_isBiquarticNoInterpolation(bool value);
-		void set_isBiquarticInterpolated(bool value);
-
 		void set_shader_index(int value);
 		void set_show_shader(bool value);
 
@@ -187,18 +211,12 @@ namespace cagd
 		void set_scaleFactor(double value);
 		void set_shading(double value);
 
-		void set_ArcVectorValue1_1(double value);
-		void set_ArcVectorValue1_2(double value);
-		void set_ArcVectorValue1_3(double value);
-		void set_ArcVectorValue2_1(double value);
-		void set_ArcVectorValue2_2(double value);
-		void set_ArcVectorValue2_3(double value);
-		void set_ArcVectorValue3_1(double value);
-		void set_ArcVectorValue3_2(double value);
-		void set_ArcVectorValue3_3(double value);
-		void set_ArcVectorValue4_1(double value);
-		void set_ArcVectorValue4_2(double value);
-		void set_ArcVectorValue4_3(double value);
+		void setArcCount(int value);
+		void setArcDivPointCount(int value);
+		void setArcDataIndex(int value);
+		void setArcData_X(double value);
+		void setArcData_Y(double value);
+		void setArcData_Z(double value);
 
 		void set_reloadSandbox(bool value);
 		void _animate();
@@ -212,5 +230,20 @@ namespace cagd
 		void setCyclicCoordinateX(double value);
 		void setCyclicCoordinateY(double value);
 		void setCyclicCoordinateZ(double value);
+
+		void set_isBiquarticData(bool value);
+		void set_isBiquarticNoInterpolation(bool value);
+		void set_isBiquarticInterpolated(bool value);
+
+		void setPatchDivPointCount_U(int value);
+		void setPatchDivPointCount_V(int value);
+		void setShowPatchIsoCurves_U(bool value);
+		void setShowPatchIsoCurves_V(bool value);
+		void setPatchSelectedRow(int value);
+		void setPatchSelectedColumn(int value);
+		void setSelectedDatapoint_X(double value);
+		void setSelectedDatapoint_Y(double value);
+		void setSelectedDatapoint_Z(double value);
+		void setPatchSize(int value);
 	};
 }

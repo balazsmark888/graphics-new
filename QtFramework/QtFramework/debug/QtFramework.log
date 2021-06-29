@@ -2,10 +2,14 @@
   GLWidget.cpp
 D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(143,30): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data
 D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\TriangulatedMeshes3.h(144,28): warning C4267: 'return': conversion from 'size_t' to 'GLuint', possible loss of data
-D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(1060,26): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(1062,20): warning C4305: '-=': truncation from 'double' to 'GLfloat'
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(862,22): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(870,22): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(944,23): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(952,23): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(1331,26): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(1333,20): warning C4305: '-=': truncation from 'double' to 'GLfloat'
 D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\Matrices.h(353,27): warning C4018: '<': signed/unsigned mismatch
 D:\Programming\repos\graphics-new\QtFramework\QtFramework\Core\Matrices.h(350): message : while compiling class template member function 'cagd::TriangularMatrix<cagd::ParametricSurface3::PartialDerivative>::TriangularMatrix(GLuint)'
-D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(463): message : see reference to function template instantiation 'cagd::TriangularMatrix<cagd::ParametricSurface3::PartialDerivative>::TriangularMatrix(GLuint)' being compiled
+D:\Programming\repos\graphics-new\QtFramework\QtFramework\GUI\GLWidget.cpp(477): message : see reference to function template instantiation 'cagd::TriangularMatrix<cagd::ParametricSurface3::PartialDerivative>::TriangularMatrix(GLuint)' being compiled
 D:\Programming\repos\graphics-new\QtFramework\QtFramework\Parametric\ParametricSurfaces3.h(19): message : see reference to class template instantiation 'cagd::TriangularMatrix<cagd::ParametricSurface3::PartialDerivative>' being compiled
   QtFramework.vcxproj -> D:\Programming\repos\graphics-new\QtFramework\QtFramework\debug\QtFramework.exe

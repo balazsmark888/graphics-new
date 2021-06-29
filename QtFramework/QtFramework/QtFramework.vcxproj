@@ -194,8 +194,8 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Core\BiquarticPatch.cpp" />
-    <ClCompile Include="Core\BiquaticArc.cpp" />
+    <ClCompile Include="Core\CubicBSplinePatch.cpp" />
+    <ClCompile Include="Core\CubicBSplineArc3.cpp" />
     <ClCompile Include="Core\CyclicCurves3.cpp" />
     <ClCompile Include="Core\Materials.cpp" />
     <ClCompile Include="GUI\GLWidget.cpp" />
@@ -215,8 +215,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\BiquarticArc.h" />
-    <ClInclude Include="Core\BiquarticPatch.h" />
+    <ClInclude Include="Core\CubicBSplineArc3.h" />
+    <ClInclude Include="Core\CubicBSplinePatch.h" />
     <ClInclude Include="Core\Colors4.h" />
     <ClInclude Include="Core\Constants.h" />
     <ClInclude Include="Core\CyclicCurves3.h" />

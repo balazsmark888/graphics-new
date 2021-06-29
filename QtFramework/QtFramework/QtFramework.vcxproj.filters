@@ -37,10 +37,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Core\BiquarticPatch.cpp">
+    <ClCompile Include="Core\CubicBSplinePatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\BiquaticArc.cpp">
+    <ClCompile Include="Core\CubicBSplineArc3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\CyclicCurves3.cpp">
@@ -96,10 +96,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\BiquarticArc.h">
+    <ClInclude Include="Core\CubicBSplineArc3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\BiquarticPatch.h">
+    <ClInclude Include="Core\CubicBSplinePatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Colors4.h">
